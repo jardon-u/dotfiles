@@ -36,6 +36,16 @@
   (save-buffer)
   )
 
+(defun add-custom-keyw()
+  "adds a few special keywords for c and c++ modes"
+  (font-lock-add-keywords nil
+     '(
+       ("\\<\\(nullptr\\)" . 'font-lock-keyword-face )
+       )
+))
+
+(add-hook 'c++-mode-hook 'add-custom-keyw)
+
 (define-key c-mode-map [(f7)] 'c-reformat-buffer)
 (define-key c++-mode-map [(f7)] 'c-reformat-buffer)
 

@@ -30,3 +30,7 @@
                '("\\.py\\'" flymake-pylint-init)))
 
 (add-hook 'python-mode-hook 'flymake-mode)
+;(add-hook 'python-mode-hook 'highlight-indentation-current-column-mode)
+(add-hook 'python-mode-hook 'highlight-indentation-mode)
+;(set-face-background 'highlight-indentation-face "#e3e3d3")
+;(set-face-background 'highlight-indentation-current-column-face "#c3b3b3")
