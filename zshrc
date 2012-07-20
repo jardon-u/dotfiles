@@ -56,8 +56,8 @@ alias ssh=autossh
 compdef '_dispatch ssh ssh' autossh
 alias h="history -f -D"
 alias ls="ls -G --color"
-alias l="\ls -lLh --color"
-alias la="\ls -lLha --color"
+alias l="\ls -lh --color"
+alias la="\ls -lha --color"
 alias grep='\grep --color=auto'
 alias rmc='rm *\~'
 alias md5='openssl dgst -md5'
