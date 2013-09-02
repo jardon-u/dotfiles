@@ -1,0 +1,10 @@
+[user]
+  name = Ugo Jardonnet
+  email = u.jardonnet@criteo.com
+[color]
+  ui = true
+[alias]
+  co = checkout
+  br = branch
+  st = status
+  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short --color
