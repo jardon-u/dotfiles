@@ -31,7 +31,7 @@ function parse_git_branch {
 autoload -U colors
 colors
 host_color="white"
-path_color="red"
+path_color="green"
 host="%{$fg[$host_color]%}%m"      # current host
 cpath="%B%{$fg[$path_color]%}%c%b" # current dir
 end="%{$reset_color%}"
