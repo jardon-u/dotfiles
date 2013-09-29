@@ -22,6 +22,10 @@
 (column-number-mode t)
 (line-number-mode t)
 
+;; insert text while the mark is active causes the selected
+;; text to be deleted first
+(delete-selection-mode 1)
+
 ;; mouse specific
 (mouse-avoidance-mode 'jump)
 (setq mouse-yank-at-point t)
