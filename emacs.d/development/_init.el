@@ -1,16 +1,19 @@
-(require 'compiling)
+(load "~/.emacs.d/development/c/_init")
+(load "~/.emacs.d/development/d/_init")
+;(load "~/.emacs.d/development/matlab/_init")
+(load "~/.emacs.d/development/pig/_init")
+(load "~/.emacs.d/development/python/_init")
 
-(packages-manager-load-packages (concat CONFIGURATION-PATH "/development")
-                                (list
-                                 "c"
-                                 "d"
-                                 "pig"
-                                 "lisp"
-                                 "matlab"
-                                 "python"
-                                 "go"
-                                 ))
+; Compilation
+(defun my-save-and-recompile ()
+  (interactive "")
+  (save-buffer 0)
+  (recompile))
+(global-set-key [f8] 'compile)
+(global-set-key [f9] 'my-save-and-recompile)
 
+(provide 'compiling)
+(provide 'recompiling)
 
 ; Do not use tab for indentation
 (setq-default indent-tabs-mode nil)

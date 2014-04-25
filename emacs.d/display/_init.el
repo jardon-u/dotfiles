@@ -1,7 +1,8 @@
-(require 'text-display)
-(require 'visual)
-
 (require 'color-theme)
+
+(load "~/.emacs.d/display/visual.el")
+(load "~/.emacs.d/display/text-display.el")
+
 (color-theme-initialize)
 (color-theme-clarity)
 
@@ -12,8 +13,8 @@
 (global-set-key (kbd "C-+") 'text-scale-increase)
 
 (require 'flymake)
-(require 'flymake-cursor)
+(load "~/.emacs.d/display/flymake-cursor.el")
 (set-face-background 'flymake-errline "red4")
 (set-face-background 'flymake-warnline "dark slate blue")
 
-(require 'highlight-indentation)
+(load "~/.emacs.d/display/highlight-indentation.el")

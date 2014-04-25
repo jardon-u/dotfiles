@@ -1,5 +1,5 @@
-(setq ipython-command "/usr/bin/ipython")
-(require 'ipython)
+;(setq ipython-command "/usr/bin/ipython")
+;(require 'ipython)
 
 ;; python-mode settings
 (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
@@ -7,7 +7,7 @@
                              interpreter-mode-alist))
 ;; path to the python interpreter, e.g.: ~rw/python27/bin/python2.7
 (setq py-python-command "python")
-(autoload 'python-mode "python-mode" "Python editing mode." t)
+(autoload 'python "python" "Python editing mode." t)
 
 ;; pymacs settings
 (setq pymacs-python-command py-python-command)
@@ -16,7 +16,7 @@
 (autoload 'pymacs-apply "pymacs")
 (autoload 'pymacs-call "pymacs")
 
-(require 'pycomplete)
+;(require 'pycomplete)
 
 (when (load "flymake" t)
   (defun flymake-pylint-init ()

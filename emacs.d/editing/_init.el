@@ -1,10 +1,10 @@
-(require 'template)
+(load "~/.emacs.d/editing/template.el")
 (template-initialize)
 
 (require 'pc-select)
 (pc-selection-mode)
 
-(require 'dos-unix-conversion)
+(load "~/.emacs.d/editing/dos-unix-conversion.el")
 
 ;; ========== Place Backup Files in Specific Directory ==========
 
@@ -67,7 +67,7 @@
 (add-hook 'python-mode-hook     'flyspell-prog-mode)
 (add-hook 'sh-mode-hook         'flyspell-prog-mode)
 
-(require 'smart-tab)
+(load "~/.emacs.d/editing/smart-tab.el")
 (global-smart-tab-mode 1)
 
 (cua-mode)

@@ -1,11 +1,14 @@
 ;;; d-mode.el --- D Programming Language mode for (X)Emacs
 ;;;               Requires a cc-mode of version 5.30 or greater
 
-;; Author:     2007 William Baxter
-;; Maintainer: William Baxter
-;; Created:    March 2007
-;; Version:    2.0.1
-;; Keywords:   D programming language emacs cc-mode
+;; Author:  2007 William Baxter
+;; Contributors:  Andrei Alexandrescu
+;; Contributors:  Russel Winder
+;; Maintainer:  Russel Winder
+;; Created:  March 2007
+;; Date:  2014-02-06
+;; Version:  2.0.7-SNAPSHOT
+;; Keywords:  D programming language emacs cc-mode
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -23,7 +26,7 @@
 ;; Boston, MA 02111-1307, USA.
 
 ;; Usage:
-;; Put these lines in your .emacs startup file.
+;; Put these lines in your init file.
 ;;   (autoload 'd-mode "d-mode" "Major mode for editing D code." t)
 ;;   (add-to-list 'auto-mode-alist '("\\.d[i]?\\'" . d-mode))
 ;;
@@ -42,19 +45,14 @@
 ;;
 ;;
 ;; TODO:
-;;   * "else static if" doesn't work properly.
-;;     (Incidentally "static else if" is fine, but unfortunately it's
-;;      not valid D syntax.)
+;;   Issues with this code are managed via the project issue management
+;;   on GitHub: https://github.com/Emacs-D-Mode-Maintainers/Emacs-D-Mode/issues?state=open
 ;;
-;;   * I tried making "with" "version" and "extern" be their own
-;;     c-other-block-decl-kwds.  Which is supposed to mean that you
-;;     can control the indentation on the block following them
-;;     individually.  It didn't seem to work right though.
 ;;
 ;; History:
-;;   * 2007 March 3 - Release of 2.0.0 version
-;;   * 2007 March 3 - Verision 2.0.1 - bugfixes for emacs 21 &
-;;      user-installed cc-mode.  Byte compilation was failing.
+;;   History is tracked in the Git repository rather than in this file.
+;;   See https://github.com/Emacs-D-Mode-Maintainers/Emacs-D-Mode/commits/master
+;;
 
 ;;----------------------------------------------------------------------------
 ;; Code:
@@ -66,6 +64,7 @@
 ;; related constants could additionally be put inside an
 ;; (eval-after-load "font-lock" ...) but then some trickery is
 ;; necessary to get them compiled.)
+;; Comment out 'when-compile part for debugging
 (eval-when-compile
   (require 'cc-langs)
   (require 'cc-fonts)
@@ -77,6 +76,19 @@
   ;; This needs to be done also at compile time since the language
   ;; constants are evaluated then.
   (c-add-language 'd-mode 'java-mode))
+
+;; D has pointers
+(c-lang-defconst c-type-decl-prefix-key
+  d (concat "\\("
+		   "[*\(]"
+		   "\\|"
+		   (c-lang-const c-type-decl-prefix-key)
+		   "\\)"
+		   "\\([^=]\\|$\\)"))
+
+;; D has fixed arrays
+(c-lang-defconst c-opt-type-suffix-key
+  d "\\(\\[[^]]*\\]\\|\\.\\.\\.\\)")
 
 (c-lang-defconst c-identifier-ops
   ;; For recognizing "~this", ".foo", and "foo.bar.baz" as identifiers
@@ -106,14 +118,15 @@
 
 (c-lang-defconst c-assignment-operators
   ;; List of all assignment operators.
-  d  '("=" "*=" "/=" "%=" "+=" "-=" ">>=" "<<=" ">>>=" "&=" "^=" "|=" "~="))
+  d  '("=" "*=" "/=" "%=" "+=" "-=" ">>=" "<<=" ">>>=" "&=" "^=" "^^="
+       "|=" "~="))
 
 (c-lang-defconst c-other-op-syntax-tokens
   "List of the tokens made up of characters in the punctuation or
 parenthesis syntax classes that have uses other than as expression
 operators."
-  d (append '("/+" "+/" "..." ".." "!" "*" "&")
-	    '("{" "}" "(" ")" "[" "]" ";" ":" "," "=" "/*" "*/" "//")))
+ d (append '("/+" "+/" "..." ".." "!" "*" "&")
+	    (c-lang-const c-other-op-syntax-tokens)))
 
 (c-lang-defconst c-block-comment-starter d "/*")
 (c-lang-defconst c-block-comment-ender   d "*/")
@@ -121,39 +134,47 @@ operators."
 (c-lang-defconst c-comment-start-regexp  d "/[*+/]")
 (c-lang-defconst c-block-comment-start-regexp d "/[*+]")
 (c-lang-defconst c-literal-start-regexp
- ;; Regexp to match the start of comments and string literals.
- d "/[*+/]\\|\"\\|`")
+  ;; Regexp to match the start of comments and string literals.
+  d "/[*+/]\\|\"\\|`")
+;;(c-lang-defconst c-comment-prefix-regexp d "//+\\|\\**")
 
 (c-lang-defconst c-doc-comment-start-regexp
  ;; doc comments for D use "///",  "/**" or doxygen's "/*!" "//!"
- d "/\\(\\*[*!]\\|/[/!]\\)")
+ d "/\\*[*!]\\|//[/!]")
+
+(c-lang-defconst c-block-prefix-disallowed-chars
+  ;; Allow ':' for inherit list starters.
+  d (set-difference (c-lang-const c-block-prefix-disallowed-chars)
+				 '(?:)))
 
 ;;----------------------------------------------------------------------------
 
 ;; Built-in basic types
 (c-lang-defconst c-primitive-type-kwds
-  d '("bit" "byte" "ubyte" "char" "delegate" "double" "float" "function"
-      "int" "long" "ubyte" "short" "uint" "ulong" "ushort" "cent" "ucent"
-      "real" "ireal" "ifloat" "creal" "cfloat" "cdouble"
-      "wchar" "dchar" "void"))
+  d '("bit" "bool" "byte" "ubyte" "char" "delegate" "double" "float"
+      "function" "int" "long" "ubyte" "short" "uint" "ulong" "ushort"
+      "cent" "ucent" "real" "ireal" "ifloat" "creal" "cfloat" "cdouble"
+      "wchar" "dchar" "void" "string" "wstring" "dstring"))
 
 ;; Keywords that can prefix normal declarations of identifiers
 (c-lang-defconst c-modifier-kwds
-  d '("auto" "abstract" "const" "deprecated" "extern"
-      "final" "lazy" "private" "protected" "public"
-      "scope" "static" "synchronized" "volatile" "mixin"))
+  d '("__gshared" "abstract" "const" "deprecated" "extern"
+      "final" "in" "out" "inout" "lazy" "mixin" "override" "private"
+      "protected" "public" "ref" "scope" "shared" "static" "synchronized"
+      "volatile" "__vector"))
 
 (c-lang-defconst c-class-decl-kwds
   ;; Keywords introducing declarations where the following block (if any)
   ;; contains another declaration level that should be considered a class.
   d '("class" "struct" "union" "interface" "template"))
 
-(c-lang-defconst c-brace-list-decl-kwds
-  d '("enum"))
+;; (c-lang-defconst c-brace-list-decl-kwds
+;;   d '("enum"))
 
 (c-lang-defconst c-type-modifier-kwds
-  d '("const" "lazy" "volatile")
-)
+  d '("__gshared" "const" "inout" "lazy" "shared" "volatile"
+      "invariant" "enum" "__vector"))
+
 (c-lang-defconst c-type-prefix-kwds
   ;; Keywords where the following name - if any - is a type name, and
   ;; where the keyword together with the symbol works as a type in
@@ -171,8 +192,7 @@ operators."
 ;;  d '("with" "version" "extern"))
 
 (c-lang-defconst c-typedef-decl-kwds
-  d (append (append (c-lang-const c-class-decl-kwds)
-		    (c-lang-const c-brace-list-decl-kwds))
+ d (append (c-lang-const c-typedef-decl-kwds)
 	    '("typedef" "alias")))
 
 (c-lang-defconst c-decl-hangon-kwds
@@ -180,7 +200,9 @@ operators."
 
 (c-lang-defconst c-protection-kwds
   ;; Access protection label keywords in classes.
-  d '("export" "private" "package" "protected" "public"))
+  d '("deprecated" "static" "extern" "final" "synchronized" "override"
+      "abstract" "scope" "const" "inout" "shared" "__gshared"
+      "private" "package" "protected" "public" "export"))
 
 ;;(c-lang-defconst c-postfix-decl-spec-kwds
 ;;  ;Keywords introducing extra declaration specifiers in the region
@@ -198,27 +220,27 @@ operators."
 (c-lang-defconst c-colon-type-list-kwds
   ;; Keywords that may be followed (not necessarily directly) by a colon
   ;; and then a comma separated list of type identifiers.
-  d  '("class" "enum"))
+  d  '("class" "enum" "interface"))
 
 (c-lang-defconst c-paren-nontype-kwds
   ;;Keywords that may be followed by a parenthesis expression that doesn't
   ;; contain type identifiers.
-  d '("version" "extern"))
+  d '("version" "debug" "extern" "macro" "mixin"))
 
 (c-lang-defconst c-paren-type-kwds
   ;; Keywords that may be followed by a parenthesis expression containing
   ;; type identifiers separated by arbitrary tokens.
-  d  '("throw"))
+  d  '("delete" "throw"))
 
 (c-lang-defconst c-block-stmt-1-kwds
   ;; Statement keywords followed directly by a substatement.
-  ;; 'static' is there for the "else static if (...) {}" usage.
-  d '("do" "else" "finally" "try" "in" "out" "debug" "body"))
+  d '("do" "else" "finally" "try" "in" "out" "body"))
 
 (c-lang-defconst c-block-stmt-2-kwds
   ;; Statement keywords followed by a paren sexp and then by a substatement.
   d '("for" "if" "switch" "while" "catch" "synchronized" "scope"
-      "foreach" "foreach_reverse" "with"))
+      "foreach" "foreach_reverse" "with" "unittest"
+      "else static if" "else"))
 
 (c-lang-defconst c-simple-stmt-kwds
   ;; Statement keywords followed by an expression or nothing.
@@ -262,12 +284,14 @@ operators."
 
 (c-lang-defconst c-other-kwds
   ;; Keywords not accounted for by any other `*-kwds' language constant.
-  d '("assert"))
+  d '("__gshared" "__traits" "assert" "cast" "is" "nothrow" "pure" "ref"
+      "sizeof" "typeid" "typeof"))
 
 
 (defcustom d-font-lock-extra-types nil
   "*List of extra types (aside from the type keywords) to recognize in D mode.
-   Each list item should be a regexp matching a single identifier.")
+   Each list item should be a regexp matching a single identifier."
+  :group 'd-mode)
 
 (defconst d-font-lock-keywords-1 (c-lang-const c-matchers-1 d)
   "Minimal highlighting for D mode.")
@@ -347,11 +371,56 @@ operators."
 (easy-menu-define d-menu d-mode-map "D Mode Commands"
   (cons "D" (c-lang-const c-mode-menu d)))
 
+(defconst d-imenu-method-name-pattern
+  (concat
+   "^\\s-*"
+   "\\(?:[_a-z@]+\\s-+\\)*"             ; qualifiers
+   "\\([][_a-zA-Z0-9.*!]+\\)\\s-+"      ; type
+   "\\([_a-zA-Z0-9]+\\)\\s-*"           ; function name
+   "\\(?:([^)]*)\\s-*\\)?"              ; type arguments
+   "([^)]*)\\s-*"                       ; arguments
+   "\\(?:[a-z]+\\s-*\\)?"               ; pure/const etc.
+   "\\(?:;\\|[ \t\n]*\\(?:if\\|{\\)\\)")) ; ';' or 'if' or '{'
+
+(defun d-imenu-method-index-function ()
+  (and
+   (let ((pt))
+     (setq pt (re-search-backward d-imenu-method-name-pattern nil t))
+     ;; The method name regexp will match lines like
+     ;; "return foo(x);" or "static if(x) {"
+     ;; so we exclude type name 'static' or 'return' here
+     (while (let ((type (match-string 1)))
+              (and pt type
+                   (save-match-data
+                     (string-match (c-lang-const c-regular-keywords-regexp) type))))
+       (setq pt (re-search-backward d-imenu-method-name-pattern nil t)))
+     pt)
+   ;; Do not count invisible definitions.
+   (let ((invis (invisible-p (point))))
+     (or (not invis)
+         (progn
+           (while (and invis
+                       (not (bobp)))
+             (setq invis (not (re-search-backward
+                               d-imenu-method-name-pattern nil 'move))))
+           (not invis))))))
+
+(defvar d-imenu-generic-expression
+  `(("*Classes*" "^\\s-*\\<class\\s-+\\([a-zA-Z0-9_]+\\)" 1)
+	("*Interfaces*" "^\\s-*\\<interface\\s-+\\([a-zA-Z0-9_]+\\)" 1)
+	("*Structs*" "^\\s-*\\<struct\\s-+\\([a-zA-Z0-9_]+\\)" 1)
+	("*Templates*" "^\\s-*\\(?:mixin\\s-+\\)?\\<template\\s-+\\([a-zA-Z0-9_]+\\)" 1)
+    (nil d-imenu-method-index-function 2)))
+
 ;;----------------------------------------------------------------------------
 ;;;###autoload (add-to-list 'auto-mode-alist '("\\.d[i]?\\'" . d-mode))
 
+;; For compatibility with Emacs < 24
+(defalias 'd-parent-mode
+  (if (fboundp 'prog-mode) 'prog-mode 'fundamental-mode))
+
 ;;;###autoload
-(defun d-mode ()
+(define-derived-mode d-mode d-parent-mode "D"
   "Major mode for editing code written in the D Programming Language.
 See http://www.digitalmars.com/d for more information about the D language.
 The hook `c-mode-common-hook' is run with no args at mode
@@ -359,21 +428,62 @@ initialization, then `d-mode-hook'.
 
 Key bindings:
 \\{d-mode-map}"
-  (interactive)
-  (kill-all-local-variables)
   (c-initialize-cc-mode t)
-  (set-syntax-table d-mode-syntax-table)
-  (setq major-mode 'd-mode
-	mode-name "D"
-	local-abbrev-table d-mode-abbrev-table
-	abbrev-mode t)
+  (setq local-abbrev-table d-mode-abbrev-table
+        abbrev-mode t)
   (use-local-map d-mode-map)
   (c-init-language-vars d-mode)
   (c-common-init 'd-mode)
   (easy-menu-add d-menu)
   (c-run-mode-hooks 'c-mode-common-hook 'd-mode-hook)
-  (c-update-modeline))
+  (c-update-modeline)
+  (cc-imenu-init d-imenu-generic-expression))
 
+;; Hideous hacks!
+;;
+;; * auto/immutable: If we leve them in c-modifier-kwds (like
+;;   c++-mode) then in the form "auto var;" var will be highlighted in
+;;   type name face. Moving auto/immutable to font-lock-add-keywords
+;;   lets cc-mode seeing them as a type name, so the next symbol can
+;;   be fontified as a variable.
+;;
+;; * public/protected/private appear both in c-modifier-kwds and in
+;;   c-protection-kwds. This causes cc-mode to fail parsing the first
+;;   declaration after an access level label (because cc-mode trys to
+;;   parse them as modifier but will fail due to the colon). But
+;;   unfortunately we cannot remove them from either c-modifier-kwds
+;;   or c-protection-kwds. Removing them from the former causes valid
+;;   syntax like "private int foo() {}" to fail. Removing them from
+;;   the latter cause indentation of the access level labels to
+;;   fail. The solution used here is to use font-lock-add-keywords to
+;;   add back the syntax highlight.
+
+(defconst d-var-decl-pattern "^[ \t]*\\(?:[_a-zA-Z0-9]+[ \t\n]+\\)*\\([_a-zA-Z0-9.!]+\\)\\(?:\\[[^]]*\\]\\|\\*\\)?[ \t\n]+\\([_a-zA-Z0-9]+\\)[ \t\n]*[;=]")
+(defconst d-fun-decl-pattern "^[ \t]*\\(?:[_a-zA-Z0-9]+[ \t\n]+\\)*\\([_a-zA-Z0-9.!]+\\)\\(?:\\[[^]]*\\]\\|\\*\\)?[ \t\n]+\\([_a-zA-Z0-9]+\\)[ \t\n]*(")
+(defmacro d-try-match-decl (regex)
+  `(let ((pt))
+     (setq pt (re-search-forward ,regex limit t))
+     (while (let ((type (match-string 1)))
+              (and pt type
+                   (save-match-data
+                     (string-match (c-lang-const c-regular-keywords-regexp) type))))
+       (setq pt (re-search-forward ,regex limit t)))
+     pt))
+(defun d-match-var-decl (limit)
+  (d-try-match-decl d-var-decl-pattern))
+(defun d-match-fun-decl (limit)
+  (d-try-match-decl d-fun-decl-pattern))
+(defun d-match-auto (limit)
+  (c-syntactic-re-search-forward "\\<\\(auto\\|immutable\\)\\>" limit t))
+
+(font-lock-add-keywords
+ 'd-mode
+ '((d-match-auto 1 font-lock-keyword-face t)
+   (d-match-var-decl (1 font-lock-type-face) (2 font-lock-variable-name-face))
+   (d-match-fun-decl (1 font-lock-type-face) (2 font-lock-function-name-face)))
+ t)
+
+
 (provide 'd-mode)
 
 ;;; d-mode.el ends here

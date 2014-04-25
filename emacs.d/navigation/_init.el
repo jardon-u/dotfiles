@@ -1,7 +1,5 @@
-
-(require 'buffer-rotate)
-(require 'place-marker)
-(require 'speedbar-ext)
+(load "~/.emacs.d/navigation/buffer-rotate.el")
+(load "~/.emacs.d/navigation/place-marker.el")
 
 (global-set-key [(control tab)] 'other-window)
 (global-set-key [(pause)] 'kill-this-buffer)
