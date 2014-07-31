@@ -144,7 +144,7 @@ cd()
 {
     builtin cd "$@"; echo $PWD; l | head -30; \
         [ `\ls -1|wc -l` -gt 30 ] &&          \
-        echo "...$fg[red]*$reset_color"
+        echo "...$fg[red]*$reset_color"; true
 }
 setopt auto_cd
 
@@ -191,3 +191,5 @@ self-insert () {
 #zle -N self-insert
 
 source /etc/environment
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
