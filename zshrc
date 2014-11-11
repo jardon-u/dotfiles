@@ -58,7 +58,7 @@ alias h="history -f -D"
 alias ls="ls -G --color"
 alias l="\ls -lh --color"
 alias la="\ls -lha --color"
-alias grep='\grep --color=auto'
+alias grep='\grep -I --color=auto'
 alias rmc='rm *\~'
 alias md5='openssl dgst -md5'
 alias open='exo-open'
@@ -192,4 +192,5 @@ self-insert () {
 
 source /etc/environment
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="$PATH:$HOME/.cask/bin/"
