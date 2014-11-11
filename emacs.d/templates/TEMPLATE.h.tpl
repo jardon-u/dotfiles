@@ -1,8 +1,12 @@
-/* @(#)TEMPLATE.h.tpl
+/*
+ * (>>>FILE<<<)
+ *
+ *  Created on: (>>>DATE<<<)
+ *      Author: (>>>LOGIN_NAME<<<)
  */
 
 #ifndef _(>>>FILE_UPCASE<<<)_H
-#define _(>>>FILE_UPCASE<<<)_H 1
+# define _(>>>FILE_UPCASE<<<)_H 1
 
 (>>>POINT<<<)
 
