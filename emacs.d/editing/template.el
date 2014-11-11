@@ -743,7 +743,7 @@ temporary message uses face in `template-message-face'."
 
 (put 'template-message-timeout 'template-secure-value #'integerp)
 
-(defcustom template-date-format "%d %b %Y"
+(defcustom template-date-format "%b %d %Y"
   "*Date/time format used with the expansion form (>>>DATE<<<).
 See `template-default-expansion-alist' and `format-time-string'.  See
 also `template-time-format'."

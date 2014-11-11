@@ -33,6 +33,7 @@
  '(show-paren-mismatch ((t (:background "#600000"))))
  '(trailing-whitespace ((((class color) (background dark))
                          (:background "gold"))))
+ '(minibuffer-prompt ((t (:foreground "white"))))
  )
 
 ;; Colorify figures
