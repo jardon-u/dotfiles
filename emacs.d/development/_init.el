@@ -28,3 +28,22 @@
 ; Auto use flyspell with .tex
 (add-hook 'latex-mode-hook 'flyspell-mode)
 (add-hook 'latex-mode-hook 'flyspell-buffer)
+
+;;; activate ecb
+(require 'ecb)
+(require 'ecb-autoloads)
+
+;;; gdb
+(setq gdb-many-windows t)
+(setq gdb-use-separate-io-buffer t)
+
+(defadvice gdb (before ecb-deactivate activate)
+"if ecb activated, deactivate it."
+(when (and (boundp 'ecb-minor-mode) ecb-minor-mode)
+(ecb-deactivate)))
+
+(add-hook 'gdb-mode-hook '(lambda () (gud-tooltip-mode 1)))
+
+(defadvice gud-kill-buffer-hook (after gud-tooltip-mode activate)
+"After gdb killed, disable gud-tooltip-mode."
+(gud-tooltip-mode -1))
