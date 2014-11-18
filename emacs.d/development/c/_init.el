@@ -17,14 +17,14 @@
 (defun c-reformat-buffer()
   (interactive)
   (save-buffer)
-  (setq sh-indent-command (concat
-                           "indent -st -bad"
-                           " --blank-lines-after-procedures "
-                           "-bli0 -i4 -l79 -ncs -npcs -nut -npsl -fca "
-                           "-lc79 -fc1 -cli4 -bap -sob -ci4 -nlp "
-                           buffer-file-name
-                           )
-        )
+  (setq sh-indent-command
+        (concat
+         "indent -st -bad"
+         " --blank-lines-after-procedures "
+         "-bli0 -i4 -l79 -ncs -npcs -nut -npsl -fca "
+         "-lc79 -fc1 -cli4 -bap -sob -ci4 -nlp "
+         buffer-file-name
+         ))
   (mark-whole-buffer)
   (universal-argument)
   (shell-command-on-region

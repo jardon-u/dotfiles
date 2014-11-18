@@ -1,6 +1,6 @@
 EMACS = $(shell which emacs)
 
-ELFILES := $(shell find . -name "*.el")
+ELFILES := $(shell find . -type d \( -path ./elpa -o -path ./.cask \) -prune -o -name "*.el")
 ELCFILES = $(ELFILES:.el=.elc)
 
 all: $(ELCFILES)
@@ -8,7 +8,7 @@ all: $(ELCFILES)
 
 ## FIXME : Make emacs compiling everything at once
 %.elc: %.el
-	printf \e[31m\e[1m $<: \e[m \n
+	@printf "$<:\n"
 	$(EMACS) --batch --eval '(setq load-path (cons "." load-path))' \
 		-f batch-byte-compile $<
 
