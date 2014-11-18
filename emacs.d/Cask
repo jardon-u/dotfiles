@@ -2,5 +2,7 @@
 (source melpa)
 
 (depends-on "dash")
+(depends-on "color-theme")
 (depends-on "flycheck")
 (depends-on "flycheck-google-cpplint")
+
