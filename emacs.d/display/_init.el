@@ -3,6 +3,7 @@
 (load "~/.emacs.d/display/visual.el")
 (load "~/.emacs.d/display/text-display.el")
 
+(require 'color-theme)
 (color-theme-initialize)
 (color-theme-clarity)
 
