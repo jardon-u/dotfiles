@@ -43,6 +43,7 @@
 (ecb-deactivate)))
 
 (add-hook 'gdb-mode-hook '(lambda () (gud-tooltip-mode 1)))
+(add-hook 'gdb-mode-hook '(lambda () (tool-bar-mode 1)))
 
 (defadvice gud-kill-buffer-hook (after gud-tooltip-mode activate)
 "After gdb killed, disable gud-tooltip-mode."
