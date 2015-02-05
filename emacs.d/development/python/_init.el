@@ -18,9 +18,4 @@
 
 ;(require 'pycomplete)
 (add-hook 'python-mode-hook 'flycheck-mode)
-(setq flycheck-flake8-maximum-line-length 120)
-
-;(add-hook 'python-mode-hook 'highlight-indentation-current-column-mode)
 (add-hook 'python-mode-hook 'highlight-indentation-mode)
-;(set-face-background 'highlight-indentation-face "#e3e3d3")
-;(set-face-background 'highlight-indentation-current-column-face "#c3b3b3")

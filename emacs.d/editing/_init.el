@@ -45,16 +45,16 @@
 (global-set-key [(meta g)] 'goto-line)
 (global-set-key [f12] 'delete-trailing-whitespace)
 
-(require 'cc-mode)
-;;Setting Tab to indent region if anything is selected
-(defun tab-indents-region () (local-set-key [(tab)] 'fledermaus-maybe-tab))
-(add-hook 'c-mode-common-hook   'tab-indents-region)
-;;fledermaus came up with this
-(defun fledermaus-maybe-tab ()
-  (interactive)
-  (if (and transient-mark-mode mark-active)
-      (indent-region (region-beginning) (region-end) nil)
-    (c-indent-command)))
+;; (require 'cc-mode)
+;; ;;Setting Tab to indent region if anything is selected
+;; (defun tab-indents-region () (local-set-key [(tab)] 'fledermaus-maybe-tab))
+;; (add-hook 'c-mode-common-hook   'tab-indents-region)
+;; ;;fledermaus came up with this
+;; (defun fledermaus-maybe-tab ()
+;;   (interactive)
+;;   (if (and transient-mark-mode mark-active)
+;;       (indent-region (region-beginning) (region-end) nil)
+;;     (c-indent-command)))
 
 (add-hook 'autoconf-mode-hook   'flyspell-prog-mode)
 (add-hook 'autotest-mode-hook   'flyspell-prog-mode)
@@ -67,8 +67,8 @@
 (add-hook 'python-mode-hook     'flyspell-prog-mode)
 (add-hook 'sh-mode-hook         'flyspell-prog-mode)
 
-(load "~/.emacs.d/editing/smart-tab.el")
-(global-smart-tab-mode 1)
+;;(load "~/.emacs.d/editing/smart-tab.el")
+;;(global-smart-tab-mode 1)
 
 (cua-mode)
 ;; toggle rectangle mark / regular mark using C-Space

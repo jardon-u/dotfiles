@@ -6,14 +6,15 @@
 source /etc/zsh_command_not_found
 
 # History
-export HISTSIZE=10000
-export SAVEHIST=10000
+export HISTIGNORE="&:ls:[bf]g:exit:reset:clear:cd:cd ..:cd.."
+export HISTSIZE=100000
+export SAVEHIST=100000
 export HISTFILE=~/.history
 chmod 600 ~/.history
-setopt histignoredups   # ignore consecutive dups in history
-setopt histreduceblanks # compact consecutive white space chars
-setopt incappendhistory # incrementally add items to HISTFILE
-setopt sharehistory     # share history between terminals
+setopt HIST_IGNORE_DUPS   # ignore consecutive dups in history
+#setopt HIST_REDUCE_BLANKS # compact consecutive white space chars
+setopt INC_APPEND_HISTORY # incrementally add items to HISTFILE
+setopt SHARE_HISTORY      # share history between terminals
 
 # Jobs
 setopt nocheckjobs  # don't check processes when exiting

@@ -48,3 +48,7 @@
 (defadvice gud-kill-buffer-hook (after gud-tooltip-mode activate)
 "After gdb killed, disable gud-tooltip-mode."
 (gud-tooltip-mode -1))
+
+;; highlights all occurences in the buffer of the word under the point
+(require 'idle-highlight-mode)
+(add-hook 'prog-mode-hook (lambda () (idle-highlight-mode t)))

@@ -1,6 +1,6 @@
 EMACS = $(shell which emacs)
 
-ELFILES := $(shell find . -type d \( -path ./elpa -o -path ./.cask \) -prune -o -name "*.el")
+ELFILES := $(shell find . -type d \( -path ./cedet-bzr -o -path ./elpa -o -path ./.cask \) -prune -o -name "*.el")
 ELCFILES = $(ELFILES:.el=.elc)
 
 all: $(ELCFILES)

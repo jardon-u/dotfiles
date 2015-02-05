@@ -56,20 +56,20 @@
 (define-key c++-mode-map "\C-j" 'semantic-ia-fast-jump)
 
 ;; company
-(require 'company)
-(setq company-backends (delete 'company-semantic company-backends))
-(define-key c-mode-map  [(tab)] 'company-complete)
-(define-key c++-mode-map  [(tab)] 'company-complete)
-(setq company-clang-arguments
-      ;(append
-       '("-std=c++11"
-       "-stdlib=libc++"
-       "-I/usr/include/c++/v1"
-       "-I/usr/include"
-       "-I/usr/include/x86_64-linux-gnu/c++/4.8/")
-       ;(f-glob "/home/ugo/dev/placemeter-suite.pmcv/*/inc/")
-       ;)
-      )
+;; (require 'company)
+;; (setq company-backends (delete 'company-semantic company-backends))
+;; (define-key c-mode-map  [(tab)] 'company-complete)
+;; (define-key c++-mode-map  [(tab)] 'company-complete)
+;; (setq company-clang-arguments
+;;       ;(append
+;;        '("-std=c++11"
+;;        "-stdlib=libc++"
+;;        "-I/usr/include/c++/v1"
+;;        "-I/usr/include"
+;;        "-I/usr/include/x86_64-linux-gnu/c++/4.8/")
+;;        ;(f-glob "/home/ugo/dev/placemeter-suite.pmcv/*/inc/")
+;;        ;)
+;;       )
 
 (setq semanticdb-project-roots (list "/home/ugo/dev/placemeter-suite.pmcv/"))
 
@@ -89,7 +89,7 @@
                   (append
                    (list (expand-file-name "/usr/include/c++/4.8/")
                          (expand-file-name "/usr/include/x86_64-linux-gnu/c++/4.8/"))
-                   (f-glob "/home/ugo/dev/placemeter-suite.pmcv/*/inc/")
+                   (f-glob "/home/ugo/dev/pmcv/*/inc/")
                    )
                   )))
 
@@ -109,9 +109,9 @@
  '(flycheck-googlelint-root "placemeter-suite.pmcv"))
 
 
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'objc-mode-hook 'irony-mode)
+;(add-hook 'c++-mode-hook 'irony-mode)
+;(add-hook 'c-mode-hook 'irony-mode)
+;(add-hook 'objc-mode-hook 'irony-mode)
 
 ;; replace the `completion-at-point' and `complete-symbol' bindings in
 ;; irony-mode's buffers by irony-mode's asynchronous function
