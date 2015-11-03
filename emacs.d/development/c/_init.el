@@ -9,10 +9,9 @@
 ;;        '(lambda ()
 ;;        (c-set-style "K&R")))
 
+(setq c-basic-offset 2)
 
 (require 'cc-mode)
-
-(setq c-basic-offset 2)
 
 (defun c-reformat-buffer()
   (interactive)
@@ -36,6 +35,7 @@
   (save-buffer)
   )
 
+;; This is a hack for Placemeter code
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 (defun add-custom-keyw()
@@ -55,32 +55,15 @@
 (define-key c-mode-map "\C-j" 'semantic-ia-fast-jump)
 (define-key c++-mode-map "\C-j" 'semantic-ia-fast-jump)
 
-;; company
-;; (require 'company)
-;; (setq company-backends (delete 'company-semantic company-backends))
-;; (define-key c-mode-map  [(tab)] 'company-complete)
-;; (define-key c++-mode-map  [(tab)] 'company-complete)
-;; (setq company-clang-arguments
-;;       ;(append
-;;        '("-std=c++11"
-;;        "-stdlib=libc++"
-;;        "-I/usr/include/c++/v1"
-;;        "-I/usr/include"
-;;        "-I/usr/include/x86_64-linux-gnu/c++/4.8/")
-;;        ;(f-glob "/home/ugo/dev/placemeter-suite.pmcv/*/inc/")
-;;        ;)
-;;       )
+;; root project directories must by added to this list
+(setq semanticdb-project-roots (list "~/dev/pmcv/"))
 
-(setq semanticdb-project-roots (list "/home/ugo/dev/placemeter-suite.pmcv/"))
-
-(global-ede-mode 1)
-(semantic-mode 1)
+;;(global-ede-mode 1)
 
 ;; configure flycheck for c++
 (require 'f)
-
 (add-hook 'c++-mode-hook
-          (lambda () (setq flycheck-clang-standard-library "libc++")))
+         (lambda () (setq flycheck-clang-standard-library "libc++")))
 (add-hook 'c++-mode-hook
           (lambda () (setq flycheck-clang-language-standard "c++11")))
 (add-hook 'c++-mode-hook
@@ -89,14 +72,14 @@
                   (append
                    (list (expand-file-name "/usr/include/c++/4.8/")
                          (expand-file-name "/usr/include/x86_64-linux-gnu/c++/4.8/"))
-                   (f-glob "/home/ugo/dev/pmcv/*/inc/")
+                   (f-glob "~/dev/pmcv/*/inc/")
                    )
                   )))
-
 (add-hook 'c++-mode-hook 'flycheck-mode)
 
 (custom-set-variables
- '(flycheck-c/c++-googlelint-executable "/usr/local/bin/cpplint.py"))
+ '(flycheck-c/c++-googlelint-executable
+   "~/.emacs.d/development/c/cpplint.py"))
 
 (load "~/.emacs.d/development/c/flycheck-google-cpplint.el")
 (flycheck-add-next-checker 'c/c++-clang
@@ -106,22 +89,8 @@
  '(flycheck-googlelint-verbose "0")
  '(flycheck-googlelint-filter "-,+whitespace,-whitespace/braces,-whitespace/newline,-whitespace/comments,+build/include_what_you_use,+build/include_order,+readability/todo")
  '(flycheck-googlelint-linelength "120")
- '(flycheck-googlelint-root "placemeter-suite.pmcv"))
-
-
-;(add-hook 'c++-mode-hook 'irony-mode)
-;(add-hook 'c-mode-hook 'irony-mode)
-;(add-hook 'objc-mode-hook 'irony-mode)
-
-;; replace the `completion-at-point' and `complete-symbol' bindings in
-;; irony-mode's buffers by irony-mode's asynchronous function
-(defun my-irony-mode-hook ()
-  (define-key irony-mode-map [remap completion-at-point]
-    'irony-completion-at-point-async)
-  (define-key irony-mode-map [remap complete-symbol]
-    'irony-completion-at-point-async))
-(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+ '(flycheck-googlelint-root "~/dev/pmcv"))
 
 ;; Only needed on Windows
-(when (eq system-type 'windows-nt)
-  (setq w32-pipe-read-delay 0))
+;(when (eq system-type 'windows-nt)
+;  (setq w32-pipe-read-delay 0))
