@@ -67,8 +67,7 @@
 (add-hook 'python-mode-hook     'flyspell-prog-mode)
 (add-hook 'sh-mode-hook         'flyspell-prog-mode)
 
-;;(load "~/.emacs.d/editing/smart-tab.el")
-;;(global-smart-tab-mode 1)
+(global-smart-tab-mode 1)
 
 (cua-mode)
 ;; toggle rectangle mark / regular mark using C-Space

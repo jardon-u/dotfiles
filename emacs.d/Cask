@@ -2,6 +2,7 @@
 (source melpa)
 
 (depends-on "dash")
+(depends-on "smart-tabs-mode")
 (depends-on "auto-complete")
 (depends-on "color-theme")
 (depends-on "flycheck")
