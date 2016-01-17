@@ -14,9 +14,10 @@
 ;; Enable versioning with default values (keep five last versions, I think!)
 (setq version-control t)
 
+(setq delete-old-versions t)
+
 ;; Save all backup file in this directory.
 (setq backup-directory-alist (quote ((".*" . "~/.emacs.d/backup"))))
-
 
 ;; provide line and column position
 (column-number-mode t)
@@ -38,23 +39,10 @@
 
 (global-hi-lock-mode 1)
 
-;;(set-default 'truncate-lines t)
-
 (global-set-key [(control meta b)] 'toggle-truncate-lines)
 (global-set-key [(control z)] 'undo)
 (global-set-key [(meta g)] 'goto-line)
 (global-set-key [f12] 'delete-trailing-whitespace)
-
-;; (require 'cc-mode)
-;; ;;Setting Tab to indent region if anything is selected
-;; (defun tab-indents-region () (local-set-key [(tab)] 'fledermaus-maybe-tab))
-;; (add-hook 'c-mode-common-hook   'tab-indents-region)
-;; ;;fledermaus came up with this
-;; (defun fledermaus-maybe-tab ()
-;;   (interactive)
-;;   (if (and transient-mark-mode mark-active)
-;;       (indent-region (region-beginning) (region-end) nil)
-;;     (c-indent-command)))
 
 (add-hook 'autoconf-mode-hook   'flyspell-prog-mode)
 (add-hook 'autotest-mode-hook   'flyspell-prog-mode)
@@ -76,3 +64,6 @@
                    (if (or (not mark-active) arg)
                        (cua-set-mark arg)
                      (cua-toggle-rectangle-mark))))
+
+;; allow downcase region
+(put 'downcase-region 'disabled nil)
