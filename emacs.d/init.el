@@ -4,12 +4,15 @@
 ;; Development
 
 (require 'package)
-(package-initialize)
 (setq package-archives
       '(("melpa" . "http://melpa.milkbox.net/packages/")
         ("ELPA" . "http://tromey.com/elpa/")
         ("gnu" . "http://elpa.gnu.org/packages/")
         ))
+(package-initialize)
+
+(require 'cask "~/.cask/cask.el")
+(cask-initialize)
 
 (load "~/.emacs.d/development/_init")
 (load "~/.emacs.d/display/_init")
