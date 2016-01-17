@@ -10,3 +10,6 @@
   hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short --color
 [push]
 	default = simple
+[gui]
+	fontui = -family \"DejaVu Sans\" -size 12 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family \"DejaVu Sans Mono\" -size 12 -weight normal -slant roman -underline 0 -overstrike 0
