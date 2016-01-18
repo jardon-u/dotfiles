@@ -115,3 +115,6 @@
 (add-hook 'c-mode-common-hook 'irony-mode)
 ;; find compilation database generated with cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+; add contextual information in echo buffer
+(add-hook 'irony-mode-hook 'irony-eldoc)
