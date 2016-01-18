@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+grep --color --exclude-dir=backup --exclude-dir=.cask --exclude-dir=elpa --exclude-dir=semanticdb --exclude-dir=.python-environments --exclude-dir=auto-save-list --exclude=company-statistics-cache.el "$@"
