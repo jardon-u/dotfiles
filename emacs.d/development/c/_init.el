@@ -107,13 +107,11 @@
 (add-hook 'c-mode-common-hook '(lambda () (c-toggle-hungry-state 1)))
 
 ;; configure company completion for c/c++
-
-;(eval-after-load 'company '(add-to-list 'company-backends
-;                                        '(company-irony-c-headers company-irony)))
 (require 'company-irony)
 (require 'company-irony-c-headers)
 (defun my/company-irony-mode-hook ()
   (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
 (add-hook 'c-mode-common-hook 'my/company-irony-mode-hook)
 (add-hook 'c-mode-common-hook 'irony-mode)
+;; find compilation database generated with cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
