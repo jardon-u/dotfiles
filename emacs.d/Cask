@@ -9,3 +9,8 @@
 (depends-on "color-theme")
 (depends-on "flycheck")
 (depends-on "flycheck-google-cpplint")
+(depends-on "company")
+(depends-on "company-irony")
+(depends-on "company-irony-c-headers")
+(depends-on "irony")
+(depends-on "flycheck-irony")
