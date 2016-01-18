@@ -77,41 +77,19 @@
 ;; (define-key c-mode-map "\C-j" 'semantic-ia-fast-jump)
 ;; (define-key c++-mode-map "\C-j" 'semantic-ia-fast-jump)
 
-(require 'flycheck-google-cpplint)
-(require 'f)
-;; root project directories must by added to this list
-;; (setq semanticdb-project-roots (list "~/dev/pmcv/"))
-;; (ede-cpp-root-project "pmcv" :file "~/dev/pmcv/PMCWorkers/exec/pmTurnstile.cpp"
-;;                       :include-path (f-glob "~/dev/pmcv/*/inc/"))
-;; (global-semantic-idle-scheduler-mode 1)
-
-;; ;; configure flycheck for c++
-;; (add-hook 'c++-mode-hook
-;;           (lambda () (setq flycheck-clang-standard-library "libc++")))
-;; (add-hook 'c++-mode-hook
-;;           (lambda () (setq flycheck-clang-language-standard "c++11")))
-;; (add-hook 'c++-mode-hook
-;;           (lambda ()
-;;             (setq flycheck-clang-include-path
-;;                   (append
-;;                    (list (expand-file-name "/usr/include/c++/4.8/")
-;;                          (expand-file-name "/usr/include/x86_64-linux-gnu/c++/4.8/"))
-;;                    (f-glob "~/dev/pmcv/*/inc/")
-;;                    )
-;;                   )))
-
 (add-hook 'c++-mode-hook 'flycheck-mode)
 
 (custom-set-variables
  '(flycheck-c/c++-googlelint-executable
    "~/.emacs.d/development/c/cpplint.py"))
 
+; run flycheck irony and cpplint
+(require 'flycheck-google-cpplint)
+(require 'flycheck-irony)
+(flycheck-add-next-checker 'irony
+                           'c/c++-googlelint)
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-
-(load "~/.emacs.d/development/c/flycheck-google-cpplint.el")
-(flycheck-add-next-checker 'c/c++-clang
-                           'c/c++-googlelint)
 
 (custom-set-variables
  '(flycheck-googlelint-verbose "0")
@@ -123,16 +101,19 @@
 ;(when (eq system-type 'windows-nt)
 ;  (setq w32-pipe-read-delay 0))
 
-; initializes auto-complete-c-headers
-;; (defun my:ac-c-header-init ()
-;;   (require 'auto-complete-c-headers)
-;;   (add-to-list 'ac-sources 'ac-source-c-headers)
-;;   (add-to-list 'achead:include-directories '"/usr/include/c++/4.8")
-;;   (add-to-list 'achead:include-directories '"/usr/include/x86_64-linux-gnu/c++/4.8")
-;;   (add-to-list 'achead:include-directories '"/usr/include/c++/4.8/backward")
-;;   (add-to-list 'achead:include-directories '"/usr/lib/gcc/x86_64-linux-gnu/4.8/include")
-;;   (add-to-list 'achead:include-directories '"/usr/local/include")
-;;   (add-to-list 'achead:include-directories '"/usr/include")
-;; )
-;; (add-hook 'c++-mode-hook 'my:ac-c-header-init)
-;; (add-hook 'c-mode-hook 'my:ac-c-header-init)
+; insert newline after inserting some characters
+(add-hook 'c-mode-common-hook '(lambda () (c-toggle-auto-state 1)))
+; delete all characters until next non-whitespace when you delete whitespace.
+(add-hook 'c-mode-common-hook '(lambda () (c-toggle-hungry-state 1)))
+
+;; configure company completion for c/c++
+
+;(eval-after-load 'company '(add-to-list 'company-backends
+;                                        '(company-irony-c-headers company-irony)))
+(require 'company-irony)
+(require 'company-irony-c-headers)
+(defun my/company-irony-mode-hook ()
+  (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
+(add-hook 'c-mode-common-hook 'my/company-irony-mode-hook)
+(add-hook 'c-mode-common-hook 'irony-mode)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)

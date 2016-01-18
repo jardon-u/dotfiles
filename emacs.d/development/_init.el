@@ -62,27 +62,13 @@
 ;; (require 'yasnippet)
 ;; (yas-global-mode 1)
 
+;; activate company mode for completion
 (require 'company)
-(require 'company-irony)
-(require 'company-irony-c-headers)
 (add-hook 'after-init-hook 'global-company-mode)
-(eval-after-load 'company '(add-to-list 'company-backends
-                                        '(company-irony-c-headers company-irony)))
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+(add-hook 'after-init-hook 'company-statistics-mode)
 
-;; replace the `completion-at-point' and `complete-symbol' bindings in
-;; irony-mode's buffers by irony-mode's function
-;; (defun my-irony-mode-hook ()
-;;   (define-key irony-mode-map [remap completion-at-point]
-;;     'irony-completion-at-point-async)
-;;   (define-key irony-mode-map [remap complete-symbol]
-;;     'irony-completion-at-point-async))
-;; (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-
+; set face for company mode
 (require 'color)
-
 (let ((bg (face-attribute 'default :background)))
   (custom-set-faces
    '(company-tooltip ((t (:background "#030B1C"))))
