@@ -4,3 +4,4 @@ semanticdb
 backup
 auto-save-list
 session.*
+.python-environments
