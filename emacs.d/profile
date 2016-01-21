@@ -1,0 +1,1 @@
+emacs -Q -l ~/.emacs.d/misc/profile-dotemacs.el -f profile-dotemacs
