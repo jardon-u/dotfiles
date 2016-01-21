@@ -18,3 +18,6 @@
 (load "~/.emacs.d/display/_init")
 (load "~/.emacs.d/editing/_init")
 (load "~/.emacs.d/navigation/_init")
+
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
