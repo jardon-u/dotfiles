@@ -30,8 +30,8 @@
 (add-hook 'latex-mode-hook 'flyspell-buffer)
 
 ;;; activate ecb
-(require 'ecb)
-(require 'ecb-autoloads)
+;(require 'ecb)
+;(require 'ecb-autoloads)
 
 ;;; gdb
 (setq gdb-many-windows 1)
