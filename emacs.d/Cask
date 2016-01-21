@@ -16,3 +16,5 @@
 (depends-on "flycheck-irony")
 (depends-on "company-jedi")
 (depends-on "company-statistics")
+(depends-on "idle-highlight-mode")
+(depends-on "highlight-indentation")
