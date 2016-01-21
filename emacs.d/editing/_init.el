@@ -1,21 +1,15 @@
 (load "~/.emacs.d/editing/template.el")
 (template-initialize)
 
-(require 'pc-select)
-(pc-selection-mode)
-
 (load "~/.emacs.d/editing/dos-unix-conversion.el")
 
 ;; ========== Place Backup Files in Specific Directory ==========
 
 ;; Enable backup files.
 (setq make-backup-files t)
-
 ;; Enable versioning with default values (keep five last versions, I think!)
 (setq version-control t)
-
 (setq delete-old-versions t)
-
 ;; Save all backup file in this directory.
 (setq backup-directory-alist (quote ((".*" . "~/.emacs.d/backup"))))
 
@@ -25,14 +19,14 @@
 
 ;; insert text while the mark is active causes the selected
 ;; text to be deleted first
-(delete-selection-mode 1)
+;(delete-selection-mode 1) ; now default
 
 ;; mouse specific
 (mouse-avoidance-mode 'jump)
 (setq mouse-yank-at-point t)
 
 ;; indent after 80 columns
-(set-default 'fill-column 80)
+(set-default 'fill-column 120)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'latex-mode-hook 'turn-on-auto-fill)
 (add-hook 'changelog-mode-hook 'turn-on-auto-fill)
@@ -41,7 +35,7 @@
 
 (global-set-key [(control meta b)] 'toggle-truncate-lines)
 (global-set-key [(control z)] 'undo)
-(global-set-key [(meta g)] 'goto-line)
+;(global-set-key [(meta g)] 'goto-line) ; default
 (global-set-key [f12] 'delete-trailing-whitespace)
 
 (add-hook 'autoconf-mode-hook   'flyspell-prog-mode)
@@ -55,7 +49,7 @@
 (add-hook 'python-mode-hook     'flyspell-prog-mode)
 (add-hook 'sh-mode-hook         'flyspell-prog-mode)
 
-(global-smart-tab-mode 1)
+;(global-smart-tab-mode 1)
 
 (cua-mode)
 ;; toggle rectangle mark / regular mark using C-Space
