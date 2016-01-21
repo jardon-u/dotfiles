@@ -101,8 +101,6 @@
 ;(when (eq system-type 'windows-nt)
 ;  (setq w32-pipe-read-delay 0))
 
-; insert newline after inserting some characters
-(add-hook 'c-mode-common-hook '(lambda () (c-toggle-auto-state 1)))
 ; delete all characters until next non-whitespace when you delete whitespace.
 (add-hook 'c-mode-common-hook '(lambda () (c-toggle-hungry-state 1)))
 
