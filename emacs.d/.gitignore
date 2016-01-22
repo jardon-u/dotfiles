@@ -5,3 +5,4 @@ backup
 auto-save-list
 session.*
 .python-environments
+custom.el
