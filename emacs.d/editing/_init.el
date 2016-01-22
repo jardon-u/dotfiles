@@ -21,6 +21,12 @@
 ;; text to be deleted first
 ;(delete-selection-mode 1) ; now default
 
+;; pair parenthesis
+(autopair-global-mode)
+
+;; activate undo tree
+(global-undo-tree-mode)
+
 ;; mouse specific
 (mouse-avoidance-mode 'jump)
 (setq mouse-yank-at-point t)
