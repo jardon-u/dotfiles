@@ -31,7 +31,7 @@
 (mouse-avoidance-mode 'jump)
 (setq mouse-yank-at-point t)
 
-;; indent after 80 columns
+;; indent after k columns
 (set-default 'fill-column 120)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'latex-mode-hook 'turn-on-auto-fill)
@@ -57,13 +57,15 @@
 
 ;(global-smart-tab-mode 1)
 
+;; C-C copy, C-V paste, C-X cut
 (cua-mode)
+
 ;; toggle rectangle mark / regular mark using C-Space
-(global-set-key (kbd "C-SPC")
-                '(lambda(&optional arg) (interactive "P")
-                   (if (or (not mark-active) arg)
-                       (cua-set-mark arg)
-                     (cua-toggle-rectangle-mark))))
+;; (global-set-key (kbd "C-SPC")
+;;                 '(lambda(&optional arg) (interactive "P")
+;;                    (if (or (not mark-active) arg)
+;;                        (cua-set-mark arg)
+;;                      (cua-toggle-rectangle-mark))))
 
 ;; allow downcase region
 (put 'downcase-region 'disabled nil)
