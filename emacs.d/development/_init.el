@@ -67,6 +67,7 @@
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook 'company-statistics-mode)
+(setq company-idle-delay .3)
 
 ; set face for company mode
 (require 'color)
