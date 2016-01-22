@@ -33,6 +33,9 @@
 ;(require 'ecb)
 ;(require 'ecb-autoloads)
 
+;; display function doc inline
+;;(eldoc-mode)
+
 ;;; gdb
 (setq gdb-many-windows 1)
 (setq gdb-use-separate-io-buffer 1)
@@ -54,9 +57,7 @@
 (add-hook 'prog-mode-hook (lambda () (idle-highlight-mode t)))
 
 ;; ; start auto-complete with default configuration
-;; (require 'auto-complete)
-;; (require 'auto-complete-config)
-;; (ac-config-default)
+(ac-config-default)
 
 ;; ; yasnippet
 ;; (require 'yasnippet)
