@@ -8,6 +8,9 @@
 (ido-mode t)
 (icomplete-mode t)
 
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "C-c M-x") 'execute-extended-command)
+
 (global-set-key [(control right)] 'forward-sexp)
 (global-set-key [(control left)]  'backward-sexp)
 
