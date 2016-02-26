@@ -19,12 +19,12 @@
 ;;          int arg3)
 (defconst my-c-lineup-maximum-indent 60)
 (defun my-c-lineup-arglist (langelem)
-    (let ((ret (c-lineup-arglist langelem)))
-      (if (< (elt ret 0) my-c-lineup-maximum-indent)
-          ret
-        (save-excursion
-          (goto-char (cdr langelem))
-          (vector (+ (current-column) 8))))))
+  (let ((ret (c-lineup-arglist langelem)))
+    (if (< (elt ret 0) my-c-lineup-maximum-indent)
+        ret
+      (save-excursion
+        (goto-char (cdr langelem))
+        (vector (+ (current-column) 8))))))
 (defun my-indent-setup ()
   (setcdr (assoc 'arglist-cont-nonempty c-offsets-alist)
           '(c-lineup-gcc-asm-reg my-c-lineup-arglist)))

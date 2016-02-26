@@ -1,5 +1,5 @@
-(setq CONFIGURATION-PATH (expand-file-name "~/.emacs.d"))
-(setq load-path (cons CONFIGURATION-PATH load-path))
+;(setq CONFIGURATION-PATH (expand-file-name "~/.emacs.d"))
+;(setq load-path (cons CONFIGURATION-PATH load-path))
 
 ;; Development
 
