@@ -67,7 +67,7 @@
 (add-hook 'after-init-hook 'global-company-mode)
 ; completion suggestion order depends on most often used completion
 (add-hook 'after-init-hook 'company-statistics-mode)
-(setq company-idle-delay .3)
+(setq company-idle-delay 0)
 
 ; set face for company mode
 (require 'color)
