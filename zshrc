@@ -60,6 +60,7 @@ alias ls="ls -G --color"
 alias l="\ls -lh --color"
 alias la="\ls -lha --color"
 alias grep='\grep -I --color=auto'
+alias grepc='grep --exclude-dir CMakeFiles --exclude Makefile --exclude compile_commands.json -r .'
 alias rmc='rm *\~'
 alias md5='openssl dgst -md5'
 alias open='exo-open'
@@ -195,3 +196,4 @@ source /etc/environment
 
 export PATH="$PATH:$HOME/.rvm/bin"
 export PATH="$PATH:$HOME/.cask/bin/"
+export PATH="$PATH:$HOME/dev/rtags/bin"
