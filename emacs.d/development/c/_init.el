@@ -51,68 +51,69 @@
   (save-buffer)
   )
 
+(define-key c-mode-map [(f7)] 'c-reformat-buffer)
+(define-key c++-mode-map [(f7)] 'c-reformat-buffer)
+
 ;; read h header as c++ file
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 (defun add-custom-keyw()
   "adds a few special keywords for c and c++ modes"
   (font-lock-add-keywords nil
-     '(("\\<\\(nullptr\\)" . 'font-lock-keyword-face )
-       ("\\<\\(override\\)" . 'font-lock-keyword-face )
+     '(("\\<\\(nullptr\\)" . 'font-lock-keyword-face)
+       ("\\<\\(override\\)" . 'font-lock-keyword-face)
+       ("\\<\\(thread_local\\)" . 'font-lock-keyword-face)
        )
      )
   )
 (add-hook 'c++-mode-hook 'add-custom-keyw)
 
-(define-key c-mode-map [(f7)] 'c-reformat-buffer)
-(define-key c++-mode-map [(f7)] 'c-reformat-buffer)
+;; setup cmake-ide with rtags
+;; rtags provides code navigation, cmake-ide automatic setup
+(defsubst string-empty-p (string)
+  "Check whether STRING is empty."
+  (string= string ""))
+(require 'rtags)
+(cmake-ide-setup)
 
-; configure semantic for smart completion and code navigation
-;; (global-ede-mode 1)
-;; (semantic-mode 1)
-;; (defun my:add-semantic-to-autocomplete()
-;;   (add-to-list 'ac-sources 'ac-source-semantic)
-;; )
-;; (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
-;; (define-key c-mode-map "\C-j" 'semantic-ia-fast-jump)
-;; (define-key c++-mode-map "\C-j" 'semantic-ia-fast-jump)
+(define-key c++-mode-map (kbd "C-j") 'rtags-find-symbol-at-point)
+(define-key c++-mode-map (kbd "C-f") 'rtags-find-references-at-point)
+(define-key c++-mode-map (kbd "C-l") 'rtags-find-virtuals-at-point)
+(define-key c++-mode-map (kbd "C-r") 'rtags-rename-symbol)
 
+;; setup flycheck with cpplint and compilation validation via irony
 (add-hook 'c++-mode-hook 'flycheck-mode)
-
 (custom-set-variables
  '(flycheck-c/c++-googlelint-executable
    "~/.emacs.d/development/c/cpplint.py"))
-
-; run flycheck irony and cpplint
 (require 'flycheck-google-cpplint)
 (require 'flycheck-irony)
 (flycheck-add-next-checker 'irony
                            'c/c++-googlelint)
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-
 (custom-set-variables
  '(flycheck-googlelint-verbose "0")
  '(flycheck-googlelint-filter "-,+whitespace,-whitespace/braces,-whitespace/newline,-whitespace/comments,+build/include_what_you_use,+build/include_order,+readability/todo")
  '(flycheck-googlelint-linelength "120")
- '(flycheck-googlelint-root "~/dev/pmcv"))
+ '(flycheck-googlelint-root "~/dev/pmcv")) ; warning cpplint works better it is the root of the project is correctly setup
 
-;; Only needed on Windows
-;(when (eq system-type 'windows-nt)
-;  (setq w32-pipe-read-delay 0))
-
-; delete all characters until next non-whitespace when you delete whitespace.
-(add-hook 'c-mode-common-hook '(lambda () (c-toggle-hungry-state 1)))
-
-;; configure company completion for c/c++
+;; configure Company completion for c/c++
+;; rtags provides completion but surprisingly less good than irony TODO: check code
+;; cmake_ide is supposed to setup completion with irony TODO: check what is done exactly
 (require 'company-irony)
 (require 'company-irony-c-headers)
 (defun my/company-irony-mode-hook ()
   (add-to-list 'company-backends '(company-irony-c-headers company-irony)))
 (add-hook 'c-mode-common-hook 'my/company-irony-mode-hook)
 (add-hook 'c-mode-common-hook 'irony-mode)
-;; find compilation database generated with cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+;; find compilation database generated with 'cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .'
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
-; add contextual information in echo buffer
+;; add contextual information in echo buffer
 (add-hook 'irony-mode-hook 'irony-eldoc)
+
+;; delete trailing whitespaces on save
+(add-hook 'c-mode-common-hook
+          (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
