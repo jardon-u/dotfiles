@@ -5,5 +5,7 @@
  *      Author: (>>>LOGIN_NAME<<<)
  */
 
+#include "(>>>FILE_SANS<<<).h"
+
 (>>>POINT<<<)
 
