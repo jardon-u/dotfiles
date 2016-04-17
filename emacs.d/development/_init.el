@@ -84,3 +84,7 @@
    '(company-preview ((t (:foreground "white" :inherit company-tooltip))))
    '(company-preview-common ((t (:foreground "salmon" :background "transparent"))))
    '(company-tooltip-search ((t (:inherit company-tooltip-common))))))
+
+;; add jump to file in sh-mode
+(eval-after-load 'sh-mode
+  '(define-key sh-mode-map "C-j" 'find-file-at-point))

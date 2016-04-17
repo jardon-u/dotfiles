@@ -7,8 +7,8 @@ source /etc/zsh_command_not_found
 
 # History
 export HISTIGNORE="&:ls:[bf]g:exit:reset:clear:cd:cd ..:cd.."
-export HISTSIZE=100000
-export SAVEHIST=100000
+export HISTSIZE=1000000
+export SAVEHIST=1000000
 export HISTFILE=~/.history
 chmod 600 ~/.history
 setopt HIST_IGNORE_DUPS   # ignore consecutive dups in history
@@ -197,3 +197,7 @@ source /etc/environment
 export PATH="$PATH:$HOME/.rvm/bin"
 export PATH="$PATH:$HOME/.cask/bin/"
 export PATH="$PATH:$HOME/dev/rtags/bin"
+export PATH="$PATH:$HOME/.local/bin"
+
+export FZF_DEFAULT_OPTS="-e"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
