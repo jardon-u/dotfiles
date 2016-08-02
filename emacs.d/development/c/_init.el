@@ -77,9 +77,11 @@
 (cmake-ide-setup)
 
 (define-key c++-mode-map (kbd "C-j") 'rtags-find-symbol-at-point)
+(define-key c++-mode-map [C-down-mouse-1] 'rtags-find-symbol-at-point)
 (define-key c++-mode-map (kbd "C-f") 'rtags-find-references-at-point)
 (define-key c++-mode-map (kbd "C-l") 'rtags-find-virtuals-at-point)
 (define-key c++-mode-map (kbd "C-r") 'rtags-rename-symbol)
+
 
 ;; setup flycheck with cpplint and compilation validation via irony
 (add-hook 'c++-mode-hook 'flycheck-mode)
