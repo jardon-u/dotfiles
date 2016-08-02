@@ -24,3 +24,7 @@
     (define-key map (kbd "C-f") 'anaconda-mode-find-references)
     map)
   "Keymap for `anaconda-mode'.")
+
+;; delete trailing whitespaces on save
+(add-hook 'python-mode-hook
+          (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
