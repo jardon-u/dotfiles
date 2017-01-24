@@ -30,7 +30,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
     bash ./install_emacs24_4.sh 
 else
-    echo "Install package version emacs24 (24.3)"
+    echo "Install package version emacs24"
     sudo apt-get install emacs24
 fi
 # emacs configuration

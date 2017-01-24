@@ -116,4 +116,6 @@
 
 ;; delete trailing whitespaces on save
 (add-hook 'c-mode-common-hook
-          (lambda () (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
+          (lambda () (add-to-list
+                      'write-file-functions
+                      'delete-trailing-whitespace)))
