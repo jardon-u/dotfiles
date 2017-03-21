@@ -17,26 +17,28 @@ then
 fi
 
 # install minimal tools to survive
-sudo apt-get install git cmake ipython
 # install python stuff (needed by emacs conf)
-sudo apt-get install python-virtualenv pylint
 # install c++ stuff (needed by emacs conf)
-sudo apt-get install clang-3.4 libclang-3.4-dev libncurses5-dev
+sudo apt-get install git cmake ipython python-virtualenv pylint clang-3.4 libclang-3.4-dev libncurses5-dev
 
 # Emacs
 read -p "Do you want to install emacs 24.4 from source ? (y) " -n 1 -r
 echo    # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    bash ./install_emacs24_4.sh 
+    echo "Install emacs24.5 from source"
+    bash ./install_emacs24_5.sh 
 else
     echo "Install package version emacs24"
     sudo apt-get install emacs24
 fi
 # emacs configuration
 pushd ~/.emacs.d
+echo "Adding .cask/bin to your $PATH"
+echo "export PATH=\"$PATH:$HOME/.cask/bin/\"" >> .zshrc
+echo "export PATH=\"$PATH:$HOME/.cask/bin/\"" >> .bashrc
+export PATH="$PATH:$HOME/.cask/bin/"
 bash ./install-cask.sh
-echo "You may need to add export PATH=\"$PATH:$HOME/.cask/bin/\" to you .zshrc or .bashrc"
 cask install
 popd
 

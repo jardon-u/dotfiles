@@ -86,10 +86,20 @@
 (custom-set-variables
  '(flycheck-c/c++-googlelint-executable
    "~/.emacs.d/development/c/cpplint.py"))
-(require 'flycheck-google-cpplint)
+
+(load "~/.emacs.d/development/c/flycheck-google-cpplint")
 (require 'flycheck-irony)
-(flycheck-add-next-checker 'irony
-                           'c/c++-googlelint)
+(eval-after-load 'flycheck
+  '(progn
+     (require 'flycheck-google-cpplint)
+     ;; Add Google C++ Style checker.
+     ;; In default, syntax checked by Clang and Cppcheck.
+     (flycheck-add-next-checker 'irony
+                                '(warning . c/c++-googlelint))))
+
+;(require 'flycheck-google-cpplint)
+;(flycheck-add-next-checker 'irony
+;                           'c/c++-googlelint)
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 (custom-set-variables
