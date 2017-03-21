@@ -19,7 +19,7 @@ fi
 # install minimal tools to survive
 # install python stuff (needed by emacs conf)
 # install c++ stuff (needed by emacs conf)
-sudo apt-get install git cmake ipython python-virtualenv pylint clang-3.4 libclang-3.4-dev libncurses5-dev
+sudo apt-get install git git-gui gitk cmake ipython python-virtualenv pylint clang-3.4 libclang-3.4-dev libncurses5-dev
 
 # Emacs
 read -p "Do you want to install emacs 24.4 from source ? (y) " -n 1 -r
