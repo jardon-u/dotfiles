@@ -65,6 +65,7 @@ alias rmc='rm *\~'
 alias md5='openssl dgst -md5'
 alias open='exo-open'
 alias s="find . -path .svn -prune -o -print | grep "
+alias ln_target_link="ln"
 
 # Add D compiler path
 export PATH=$PATH:$HOME/bin/dmd/bin/
