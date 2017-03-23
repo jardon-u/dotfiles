@@ -11,7 +11,7 @@
 ;;        '(lambda ()
 ;;        (c-set-style "K&R")))
 
-(setq c-basic-offset 2)
+;;(setq c-basic-offset 4)
 
 ;; public void veryLongMethodNameHereWithArgs(
 ;;          String arg1,

@@ -41,7 +41,7 @@
 
 (global-set-key [(control meta b)] 'toggle-truncate-lines)
 (global-set-key [(control z)] 'undo)
-;(global-set-key [(meta g)] 'goto-line) ; default
+(global-set-key [(meta g)] 'goto-line)
 (global-set-key [f12] 'delete-trailing-whitespace)
 
 (add-hook 'autoconf-mode-hook   'flyspell-prog-mode)
@@ -69,3 +69,7 @@
 
 ;; allow downcase region
 (put 'downcase-region 'disabled nil)
+
+;; disable insert key
+(define-key global-map [(insert)] nil)
+(define-key global-map [(control insert)] 'overwrite-mode)

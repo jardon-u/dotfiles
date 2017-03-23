@@ -61,6 +61,7 @@ alias l="\ls -lh --color"
 alias la="\ls -lha --color"
 alias grep='\grep -I --color=auto'
 alias grepc='grep --exclude-dir CMakeFiles --exclude Makefile --exclude compile_commands.json -r .'
+alias greps='grep --exclude-dir .svn '
 alias rmc='rm *\~'
 alias md5='openssl dgst -md5'
 alias open='exo-open'
@@ -202,3 +203,5 @@ export PATH="$PATH:$HOME/.local/bin"
 
 export FZF_DEFAULT_OPTS="-e"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export PATH="$PATH:/home/ugo/clion-2016.2.2/bin"

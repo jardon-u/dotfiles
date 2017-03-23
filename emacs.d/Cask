@@ -24,4 +24,4 @@
 (depends-on "undo-tree")
 (depends-on "autopair")
 (depends-on "rtags")
-(depends-on "cmake-ide")
+(depends-on "cmake-ide")(depends-on "dtrt-indent")
