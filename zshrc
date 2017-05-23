@@ -50,7 +50,7 @@ export EDITOR='emacs'
 export NNTPSERVER='news.epita.fr'
 export SOCKS5_USER="$USER"
 export SOCKS5_PASSWD='~/.socks'
-umask 077 # define new file rights
+#umask 077 # define new file rights
 
 # Alias
 alias ssh=autossh
