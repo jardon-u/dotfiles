@@ -22,7 +22,7 @@ fi
 sudo apt-get install git git-gui gitk cmake ipython python-virtualenv pylint clang-3.4 libclang-3.4-dev libncurses5-dev
 
 # Emacs
-read -p "Do you want to install emacs 24.4 from source ? (y) " -n 1 -r
+read -p "Do you want to install emacs 24.5 from source (configuration may not work otherwise) ? (y) " -n 1 -r
 echo    # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
