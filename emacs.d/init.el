@@ -3,13 +3,13 @@
 
 ;; Development
 
-(require 'package)
-(setq package-archives
-      '(("melpa" . "http://melpa.milkbox.net/packages/")
-        ("ELPA" . "http://tromey.com/elpa/")
-        ("gnu" . "http://elpa.gnu.org/packages/")
-        ))
-(package-initialize)
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (package-initialize)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  (add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/") t)
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
+  )
 
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)

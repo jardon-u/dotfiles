@@ -12,6 +12,17 @@
 ;;        (c-set-style "K&R")))
 
 ;;(setq c-basic-offset 4)
+;; auto-indent based on file
+(add-hook 'c-mode-common-hook
+  (lambda()
+    (require 'dtrt-indent)
+    (dtrt-indent-mode t)))
+
+;; delete trailing whitespaces on save
+(add-hook 'c-mode-common-hook
+          (lambda () (add-to-list
+                      'write-file-functions
+                      'delete-trailing-whitespace)))
 
 ;; public void veryLongMethodNameHereWithArgs(
 ;;          String arg1,

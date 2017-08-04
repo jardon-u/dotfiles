@@ -17,7 +17,7 @@
 
 ; Do not use tab for indentation
 (setq-default indent-tabs-mode nil)
-(setq default-tab-width 2)
+;(setq default-tab-width 4)
 
 ;;(setq show-paren-style 'expression)
 (setq show-paren-style 'paren)

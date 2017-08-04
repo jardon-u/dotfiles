@@ -37,11 +37,6 @@
 (add-hook 'latex-mode-hook 'turn-on-auto-fill)
 (add-hook 'changelog-mode-hook 'turn-on-auto-fill)
 
-;; auto-indent based on file
-; TODO(ugo) auto load with prog modes only
-(require 'dtrt-indent)
-(dtrt-indent-mode 1)
-
 (global-hi-lock-mode 1)
 
 (global-set-key [(control meta b)] 'toggle-truncate-lines)
