@@ -5,6 +5,10 @@
 ;;     ;                           ;
 ;;  }                           }
 (c-set-offset 'substatement-open 0)
+
+;; do not indent namespaces
+(c-set-offset 'innamespace 0)
+
 ;;
 ;; better
 ;; (setq c-mode-hook
