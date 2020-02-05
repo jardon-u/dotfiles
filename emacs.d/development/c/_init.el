@@ -146,3 +146,19 @@
           (lambda () (add-to-list
                       'write-file-functions
                       'delete-trailing-whitespace)))
+
+;;; gdb
+;; display all debug windows
+(setq gdb-many-windows 1)
+(setq gdb-use-separate-io-buffer 1)
+(defadvice gdb (before ecb-deactivate activate)
+  "if ecb activated, deactivate it."
+  (when (and (boundp 'ecb-minor-mode) ecb-minor-mode)
+    (ecb-deactivate)))
+;; info on overlay
+(add-hook 'gdb-mode-hook '(lambda () (gud-tooltip-mode 1)))
+(defadvice gud-kill-buffer-hook (after gud-tooltip-mode activate)
+"After gdb killed, disable gud-tooltip-mode."
+(gud-tooltip-mode -1))
+;; code navigation toolbar
+(add-hook 'gdb-mode-hook '(lambda () (tool-bar-mode 1)))

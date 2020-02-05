@@ -42,22 +42,6 @@
 ;; (require 'yasnippet)
 ;; (yas-global-mode 1)
 
-;;; gdb
-;; display all debug windows
-(setq gdb-many-windows 1)
-(setq gdb-use-separate-io-buffer 1)
-(defadvice gdb (before ecb-deactivate activate)
-  "if ecb activated, deactivate it."
-  (when (and (boundp 'ecb-minor-mode) ecb-minor-mode)
-    (ecb-deactivate)))
-;; info on overlay
-(add-hook 'gdb-mode-hook '(lambda () (gud-tooltip-mode 1)))
-(defadvice gud-kill-buffer-hook (after gud-tooltip-mode activate)
-"After gdb killed, disable gud-tooltip-mode."
-(gud-tooltip-mode -1))
-;; code navigation toolbar
-(add-hook 'gdb-mode-hook '(lambda () (tool-bar-mode 1)))
-
 ;; highlights all occurences in the buffer of the word under the point
 (require 'idle-highlight-mode)
 (add-hook 'prog-mode-hook (lambda () (idle-highlight-mode t)))
@@ -88,3 +72,8 @@
 ;; add jump to file in sh-mode
 (eval-after-load 'sh-mode
   '(define-key sh-mode-map "C-j" 'find-file-at-point))
+
+(add-hook 'json-mode-hook
+          (lambda ()
+            (make-local-variable 'js-indent-level)
+            (setq js-indent-level 2)))

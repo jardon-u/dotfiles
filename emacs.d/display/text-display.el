@@ -33,5 +33,4 @@
                           ("\\<9\\>" . 'my-nine-face)
                           ))
 
-
 (provide 'text-display)

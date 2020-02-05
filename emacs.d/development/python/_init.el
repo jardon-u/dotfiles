@@ -16,6 +16,7 @@
  '(add-to-list 'company-backends 'company-anaconda))
 (add-hook 'python-mode-hook 'anaconda-mode)
 (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+(add-hook 'python-mode-hook 'anaconda-mode-complete)
 
 (defvar anaconda-mode-map
   (let ((map (make-sparse-keymap)))
