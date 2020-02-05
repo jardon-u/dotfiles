@@ -5,6 +5,8 @@
 # import
 source /etc/zsh_command_not_found
 
+export LC_ALL=C
+
 # History
 export HISTIGNORE="&:ls:[bf]g:exit:reset:clear:cd:cd ..:cd.."
 export HISTSIZE=1000000
@@ -67,6 +69,7 @@ alias md5='openssl dgst -md5'
 alias open='exo-open'
 alias s="find . -path .svn -prune -o -print | grep "
 alias ln_target_link="ln"
+alias sshl="sed -rn 's/^\s*Host\s+(.*)\s*/\1/ip' ~/.ssh/config"
 
 # Add D compiler path
 export PATH=$PATH:$HOME/bin/dmd/bin/
@@ -79,8 +82,18 @@ zstyle ':completion:*' max-errors 2
 zstyle ':completion:*' menu select=5 #2
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
 
-autoload -Uz compinit
-compinit
+# Better SSH/Rsync/SCP Autocomplete
+zstyle ':completion:*:(scp|rsync):*' tag-order ' hosts:-ipaddr:ip\ address hosts:-host:host files'
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*(.|:)*' loopback ip6-loopback localhost ip6-localhost broadcasthost
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<->.<->.<->|(|::)([[:xdigit:].]##:(#c,2))##(|%*))' '127.0.0.<->' '255.255.255.255' '::1' 'fe80::*'
+
+# Allow for autocomplete to be case insensitive
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' \
+  '+l:|?=** r:|?=**'
+
+# Initialize the autocompletion
+autoload -Uz compinit && compinit -i
+
 # End of lines added by compinstall
 
 # no beep
@@ -89,14 +102,15 @@ unsetopt hist_beep
 unsetopt list_beep
 unsetopt ignore_eof
 
-my-delete-char() {
+backward-delete-char() {
     if [ "$BUFFER" = "" ]; then
         builtin cd ..
+        zle .accept-line
     else
         zle .backward-delete-char
     fi
 }
-zle -N my-delete-char
+#zle -N backward-delete-char
 
 # Bindings
 #=========
@@ -205,3 +219,29 @@ export FZF_DEFAULT_OPTS="-e"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export PATH="$PATH:/home/ugo/clion-2016.2.2/bin"
+
+#   for PyEnv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$HOME/.pyenv/bin:$PATH"
+export PATH="$HOME/.pyenv/shims:$PATH"
+eval "$(pyenv init -)"
+
+git-amend-to() (
+  # Stash, apply to past commit, and rebase the current branch on to of the result.
+  current_branch="$(git rev-parse --abbrev-ref HEAD)"
+  apply_to="$1"
+  git stash
+  git checkout "$apply_to"
+  git stash apply
+  git add -u
+  git commit --amend --no-edit
+  new_sha="$(git log --format="%H" -n 1)"
+  git checkout "$current_branch"
+  git rebase --onto "$new_sha" "$apply_to"
+)
+
+export KUBECONFIG=/home/ugo/.kube/kubeconfig-savant.yaml
+alias pods='kubectl get pods '
+alias ktops='kubectl top pods '
+alias kexec='kubectl exec -it '
+alias klogs='kubectl logs '
